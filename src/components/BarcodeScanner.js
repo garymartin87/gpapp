@@ -19,13 +19,13 @@ export default class BarcodeScanner extends Component {
                     onGoogleVisionBarcodesDetected={({ barcodes }) => {
                         Alert.alert(
                             barcodes[0].data,
-                            barcodes[0].type,
+                            barcodes[0].type
                         );
                     }}
                 />
                 <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
-                        <Text style={{ fontSize: 14 }}> SNAP </Text>
+                        <Text style={{ fontSize: 14 }}> Capturar </Text>
                     </TouchableOpacity>
                 </View>
             </View>
