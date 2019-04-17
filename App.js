@@ -1,5 +1,5 @@
-import React from "react";
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import React from 'react';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Home from './src/components/Home';
 import BarcodeScanner from './src/components/BarcodeScanner';
@@ -7,10 +7,10 @@ import BarcodeScanner from './src/components/BarcodeScanner';
 const AppNavigator = createStackNavigator(
     {
         Home: Home,
-        BarcodeScanner: BarcodeScanner
+        BarcodeScanner: BarcodeScanner,
     },
     {
-        initialRouteName: "Home"
+        initialRouteName: 'Home',
     }
 );
 

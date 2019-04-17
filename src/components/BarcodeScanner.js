@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    AppRegistry,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { Alert } from 'react-native';
 
@@ -15,16 +21,24 @@ export default class BarcodeScanner extends Component {
                     type={RNCamera.Constants.Type.back}
                     flashMode={RNCamera.Constants.FlashMode.on}
                     permissionDialogTitle={'Permission to use camera'}
-                    permissionDialogMessage={'We need your permission to use your camera phone'}
+                    permissionDialogMessage={
+                        'We need your permission to use your camera phone'
+                    }
                     onGoogleVisionBarcodesDetected={({ barcodes }) => {
-                        Alert.alert(
-                            barcodes[0].data,
-                            barcodes[0].type
-                        );
+                        Alert.alert(barcodes[0].data, barcodes[0].type);
                     }}
                 />
-                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
+                <View
+                    style={{
+                        flex: 0,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={this.takePicture.bind(this)}
+                        style={styles.capture}
+                    >
                         <Text style={{ fontSize: 14 }}> Capturar Imagen </Text>
                     </TouchableOpacity>
                 </View>
