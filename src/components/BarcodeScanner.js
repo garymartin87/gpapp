@@ -35,12 +35,14 @@ export default class BarcodeScanner extends Component {
                         justifyContent: 'center',
                     }}
                 >
+                    {/*
                     <TouchableOpacity
                         onPress={this.takePicture.bind(this)}
                         style={styles.capture}
                     >
                         <Text style={{ fontSize: 14 }}> Capturar Imagen </Text>
                     </TouchableOpacity>
+                    */}
                 </View>
             </View>
         );
