@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { withNavigationFocus, NavigationEvents } from 'react-navigation';
 
 const AddProducts = props => {
     const { navigation } = props;

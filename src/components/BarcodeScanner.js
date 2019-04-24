@@ -15,8 +15,7 @@ export default class BarcodeScanner extends Component {
         this.state = { barcodeDetected: null };
     }
 
-    //ToDo: evaluate to move this flag to state
-    barcodeDetected = false;
+    barcodeDetected = false; //ToDo: evaluate to move this flag to state
     barcodeDetectedHandler = this.props.navigation.getParam('onScanBarcode');
 
     render() {
@@ -41,12 +40,13 @@ export default class BarcodeScanner extends Component {
 
                         // callback function
                         if (!this.barcodeDetected) {
+                            //prevent multiple callback calls
                             this.barcodeDetected = true;
 
-                            //prevent callback multiple
+                            // prevent callback multiple
                             this.barcodeDetectedHandler(barcodes[0]);
 
-                            //goBack
+                            // goBack
                             const goBack = this.props.navigation.getParam(
                                 'goBack'
                             );
