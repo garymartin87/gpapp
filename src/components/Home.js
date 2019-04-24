@@ -1,28 +1,24 @@
 import React from 'react';
 import { Button } from 'react-native-elements';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-class Home extends React.Component {
-    render() {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Button
-                    icon={<Icon name="barcode" size={15} color="white" />}
-                    title=" Escanear código"
-                    onPress={() =>
-                        this.props.navigation.navigate('BarcodeScanner')
-                    }
-                />
-            </View>
-        );
-    }
-}
+const Home = props => {
+    return (
+        <View
+            style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+            <Button
+                icon={<Icon name="shopping-cart" size={15} color="white" />}
+                title=" Cargar Productos"
+                onPress={() => props.navigation.navigate('AddProducts')}
+            />
+        </View>
+    );
+};
 
 export default Home;

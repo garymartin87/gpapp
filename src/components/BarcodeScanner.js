@@ -10,6 +10,26 @@ import { RNCamera } from 'react-native-camera';
 import { Alert } from 'react-native';
 
 export default class BarcodeScanner extends Component {
+    constructor(props) {
+        super(props);
+        console.log(
+            '---------- INITIALIZE BARCODEDETECTED TO FALSE ----------'
+        );
+        this.state = { barcodeDetected: null };
+    }
+
+    barcodeDetected = false;
+
+    barcodeDetectedHandler = barcodeDetected => {
+        if (!this.barcodeDetected) {
+            console.log('Redirecting again to AddProducts');
+            this.barcodeDetected = true;
+            this.props.navigation.navigate('AddProducts', {
+                barcodeDetected: barcodeDetected,
+            });
+        }
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -25,7 +45,18 @@ export default class BarcodeScanner extends Component {
                         'We need your permission to use your camera phone'
                     }
                     onGoogleVisionBarcodesDetected={({ barcodes }) => {
-                        Alert.alert(barcodes[0].data, barcodes[0].type);
+                        console.log(
+                            'onGoogleVisionBarcodesDetected',
+                            barcodes[0]
+                        );
+
+                        this.barcodeDetectedHandler(barcodes[0]);
+
+                        /*
+                        this.props.navigation.navigate('AddProducts', {
+                            barcodeDetected: barcodes[0],
+                        });
+                        */
                     }}
                 />
                 <View

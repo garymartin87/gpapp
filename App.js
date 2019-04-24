@@ -3,11 +3,14 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Home from './src/components/Home';
 import BarcodeScanner from './src/components/BarcodeScanner';
+import AddProducts from './src/components/AddProducts';
+import { StyleSheet } from 'react-native';
 
 const AppNavigator = createStackNavigator(
     {
         Home: Home,
         BarcodeScanner: BarcodeScanner,
+        AddProducts: AddProducts,
     },
     {
         initialRouteName: 'Home',
