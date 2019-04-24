@@ -1,20 +1,9 @@
 import React, { Component } from 'react';
-import {
-    AppRegistry,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import { Alert } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
-export default class BarcodeScanner extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { barcodeDetected: null };
-    }
-
+class BarcodeScanner extends Component {
     barcodeDetected = false; //ToDo: evaluate to move this flag to state
     barcodeDetectedHandler = this.props.navigation.getParam('onScanBarcode');
 
@@ -107,3 +96,5 @@ const styles = StyleSheet.create({
         margin: 20,
     },
 });
+
+export default withNavigation(BarcodeScanner);

@@ -1,32 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Input } from 'react-native-elements';
+
+import AddProductsForm from './forms/AddProductsForm';
 
 const AddProducts = props => {
-    const { navigation } = props;
-
-    const onScanBarcode = barcode => {
-        console.log('AddProducts onScanBarcode Callback', barcode);
+    const handleSubmit = () => {
+        console.log('AddProduct parent handleSubmit');
     };
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputProductContainer}>
-                <Input
-                    containerViewStyle={styles.inputProductInput}
-                    placeholder="Código del producto"
-                />
-                <Button
-                    title="Es"
-                    style={styles.btnScanProduct}
-                    onPress={() =>
-                        navigation.navigate('BarcodeScanner', {
-                            onScanBarcode,
-                            goBack: true,
-                        })
-                    }
-                />
-            </View>
+            <AddProductsForm handleSubmit={handleSubmit} />
         </View>
     );
 };
@@ -38,18 +22,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'flex-start',
-    },
-    inputProductContainer: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    inputProductInput: {
-        width: '10%',
-    },
-    btnScanProduct: {
-        width: '30%',
     },
 });
 
