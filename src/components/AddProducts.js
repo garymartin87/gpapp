@@ -6,30 +6,12 @@ import { withNavigationFocus, NavigationEvents } from 'react-navigation';
 const AddProducts = props => {
     const { navigation } = props;
 
-    /*
-    useEffect(() => {
-        console.log('Checking barcode back');
-        const barcode = props.navigation.getParam(barcode, null);
-        console.log('Barcode back', barcode);
-    });
-    */
+    const onScanBarcode = barcode => {
+        console.log('AddProducts onScanBarcode Callback', barcode);
+    };
 
     return (
         <View style={styles.container}>
-            <NavigationEvents
-                onDidFocus={payload => {
-                    console.log('did focus', payload);
-                    const barcodeDetected = props.navigation.getParam(
-                        'barcodeDetected',
-                        null
-                    );
-
-                    console.log(
-                        'barcodeDetected on AddProducts',
-                        barcodeDetected
-                    );
-                }}
-            />
             <View style={styles.inputProductContainer}>
                 <Input
                     containerViewStyle={styles.inputProductInput}
@@ -38,7 +20,12 @@ const AddProducts = props => {
                 <Button
                     title="Es"
                     style={styles.btnScanProduct}
-                    onPress={() => props.navigation.navigate('BarcodeScanner')}
+                    onPress={() =>
+                        navigation.navigate('BarcodeScanner', {
+                            onScanBarcode,
+                            goBack: true,
+                        })
+                    }
                 />
             </View>
         </View>

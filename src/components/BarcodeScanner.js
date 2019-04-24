@@ -12,23 +12,12 @@ import { Alert } from 'react-native';
 export default class BarcodeScanner extends Component {
     constructor(props) {
         super(props);
-        console.log(
-            '---------- INITIALIZE BARCODEDETECTED TO FALSE ----------'
-        );
         this.state = { barcodeDetected: null };
     }
 
+    //ToDo: evaluate to move this flag to state
     barcodeDetected = false;
-
-    barcodeDetectedHandler = barcodeDetected => {
-        if (!this.barcodeDetected) {
-            console.log('Redirecting again to AddProducts');
-            this.barcodeDetected = true;
-            this.props.navigation.navigate('AddProducts', {
-                barcodeDetected: barcodeDetected,
-            });
-        }
-    };
+    barcodeDetectedHandler = this.props.navigation.getParam('onScanBarcode');
 
     render() {
         return (
@@ -46,17 +35,26 @@ export default class BarcodeScanner extends Component {
                     }
                     onGoogleVisionBarcodesDetected={({ barcodes }) => {
                         console.log(
-                            'onGoogleVisionBarcodesDetected',
+                            'BarcodeScanner onGoogleVisionBarcodesDetected function',
                             barcodes[0]
                         );
 
-                        this.barcodeDetectedHandler(barcodes[0]);
+                        // callback function
+                        if (!this.barcodeDetected) {
+                            this.barcodeDetected = true;
 
-                        /*
-                        this.props.navigation.navigate('AddProducts', {
-                            barcodeDetected: barcodes[0],
-                        });
-                        */
+                            //prevent callback multiple
+                            this.barcodeDetectedHandler(barcodes[0]);
+
+                            //goBack
+                            const goBack = this.props.navigation.getParam(
+                                'goBack'
+                            );
+
+                            if (goBack) {
+                                this.props.navigation.goBack();
+                            }
+                        }
                     }}
                 />
                 <View
