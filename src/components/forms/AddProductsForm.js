@@ -20,32 +20,34 @@ const onScanBarcode = barcode => {
     console.log('AddProducts onScanBarcode Callback', barcode);
 };
 
-const submit = values => {
-    console.log('AddProductsForm submit function', values);
-};
-
 let AddProductsForm = props => {
     const { navigation, handleSubmit } = props;
 
     return (
-        <View style={styles.inputProductContainer}>
-            <Field
-                name="productId"
-                placeholder="Código del producto"
-                component={renderInput}
-            />
-            <Button
-                title="Escanear"
-                onPress={() =>
-                    navigation.navigate('BarcodeScanner', {
-                        onScanBarcode,
-                        goBack: true,
-                    })
-                }
-            />
-            <TouchableOpacity onPress={handleSubmit(submit)}>
-                <Text style={styles.btnSubmit}>Submit</Text>
-            </TouchableOpacity>
+        <View>
+            <View>
+                <Field
+                    name="productId"
+                    placeholder="Código del producto"
+                    component={renderInput}
+                />
+            </View>
+            <View>
+                <Button
+                    title="Escanear"
+                    onPress={() =>
+                        navigation.navigate('BarcodeScanner', {
+                            onScanBarcode,
+                            goBack: true,
+                        })
+                    }
+                />
+            </View>
+            <View>
+                <TouchableOpacity onPress={handleSubmit}>
+                    <Text style={styles.btnSubmit}>Submit</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -57,8 +59,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    input: {},
-    btnSubmit: {},
+    inputContainer: {
+        width: '100%',
+    },
 });
 
 AddProductsForm = reduxForm({

@@ -4,13 +4,13 @@ import { StyleSheet, View } from 'react-native';
 import AddProductsForm from './forms/AddProductsForm';
 
 const AddProducts = props => {
-    const handleSubmit = () => {
-        console.log('AddProduct parent handleSubmit');
+    const onSubmit = values => {
+        console.log('AddProduct parent handleSubmit', values);
     };
 
     return (
         <View style={styles.container}>
-            <AddProductsForm handleSubmit={handleSubmit} />
+            <AddProductsForm onSubmit={onSubmit} />
         </View>
     );
 };
