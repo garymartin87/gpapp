@@ -7,12 +7,22 @@ import {
     TextInput,
 } from 'react-native';
 import { Button, Input } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Feather';
 import { withNavigation } from 'react-navigation';
 import { Field, reduxForm } from 'redux-form';
 
-const renderInput = ({ input: { onChange, ...restInput } }) => {
+const renderInput = ({ input, placeholder, label }) => {
+    console.log(input);
+    console.log(placeholder);
+    console.log(label);
     return (
-        <Input style={styles.input} onChangeText={onChange} {...restInput} />
+        <Input
+            containerStyle={styles.containerInput}
+            onChangeText={input.onChange}
+            label={label}
+            placeholder={placeholder}
+            {...input}
+        />
     );
 };
 
@@ -24,43 +34,60 @@ let AddProductsForm = props => {
     const { navigation, handleSubmit } = props;
 
     return (
-        <View>
-            <View>
-                <Field
-                    name="productId"
-                    placeholder="Código del producto"
-                    component={renderInput}
-                />
+        <View style={styles.container}>
+            <View style={styles.containerProduct}>
+                <View style={styles.containerProductId}>
+                    <Field
+                        component={renderInput}
+                        name="productId"
+                        placeholder="7792081291051"
+                        label="Código de producto"
+                    />
+                </View>
+
+                <View style={styles.containerProductScan}>
+                    <Button
+                        icon={<Icon name="camera" color="white" size={20} />}
+                        onPress={() =>
+                            navigation.navigate('BarcodeScanner', {
+                                onScanBarcode,
+                                goBack: true,
+                            })
+                        }
+                    />
+                </View>
             </View>
-            <View>
-                <Button
-                    title="Escanear"
-                    onPress={() =>
-                        navigation.navigate('BarcodeScanner', {
-                            onScanBarcode,
-                            goBack: true,
-                        })
-                    }
-                />
-            </View>
-            <View>
-                <TouchableOpacity onPress={handleSubmit}>
-                    <Text style={styles.btnSubmit}>Submit</Text>
-                </TouchableOpacity>
+
+            <View style={styles.containerButton}>
+                <Button onPress={handleSubmit} title="Cargar petición" />
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    inputProductContainer: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        padding: 15,
     },
-    inputContainer: {
-        width: '100%',
+    containerProduct: {
+        flexDirection: 'row',
+    },
+    containerProductId: {
+        flex: 4,
+    },
+    containerProductScan: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    containerButton: {
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+    containerInput: {
+        marginBottom: 10,
     },
 });
 
