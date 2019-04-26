@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "faker": "^4.1.0",
     "react": "16.8.3",
     "react-native": "0.59.4",
     "react-native-camera": "git+https://git@github.com/react-native-community/react-native-camera.git",

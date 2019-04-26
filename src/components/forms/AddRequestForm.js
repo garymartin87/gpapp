@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm, arrayPush } from 'redux-form';
+import Faker from 'faker';
 
 import AddProduct from '../AddProduct';
 import RenderInput from '../RenderInput';
@@ -20,11 +21,10 @@ const renderProduct = ({ item }) => {
     return (
         <ListItem
             key={item.code}
-            title={item.code}
+            title={item.description}
+            subtitle={item.code}
             containerStyle={styles.containerProduct}
-        >
-            <Text>{item.code}</Text>
-        </ListItem>
+        />
     );
 };
 
@@ -32,9 +32,12 @@ let AddRequestForm = props => {
     const { handleSubmit, onSubmit, pushArray } = props;
 
     const handleAddProduct = barcode => {
-        console.log('ADDING PRODUCT code', barcode);
+        const product = {
+            code: barcode,
+            description: Faker.hacker.noun(),
+        };
 
-        const product = { code: barcode };
+        console.log('ADDING PRODUCT code', product);
 
         pushArray('addProduct', 'products', product);
     };
@@ -79,9 +82,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     containerProducts: {},
-    containerProduct: {
-        backgroundColor: 'grey',
-    },
+    containerProduct: {},
     submitButton: {
         fontSize: 20,
     },
