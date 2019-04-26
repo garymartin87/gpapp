@@ -59,7 +59,16 @@ let AddProductsForm = props => {
             </View>
 
             <View style={styles.containerButton}>
-                <Button onPress={handleSubmit} title="Cargar petición" />
+                <Button
+                    style={styles.submitButton}
+                    icon={{
+                        name: 'check-circle',
+                        size: 20,
+                        color: 'white',
+                    }}
+                    onPress={handleSubmit}
+                    title="Cargar Petición"
+                />
             </View>
         </View>
     );
@@ -84,10 +93,14 @@ const styles = StyleSheet.create({
     },
     containerButton: {
         flex: 1,
+        marginBottom: 20,
         justifyContent: 'flex-end',
     },
     containerInput: {
         marginBottom: 10,
+    },
+    submitButton: {
+        fontSize: 20,
     },
 });
 
