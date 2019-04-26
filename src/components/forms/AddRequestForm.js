@@ -1,23 +1,30 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm, arrayPush } from 'redux-form';
 
 import AddProduct from '../AddProduct';
 import RenderInput from '../RenderInput';
 
-const renderProduct = ({ item }) => {
-    return <Text>{item.code}</Text>;
-};
+const renderProducts = ({ fields, meta: { error, submitFailed } }) => (
+    <FlatList
+        style={styles.containerProducts}
+        keyExtractor={item => item.code}
+        data={fields.getAll()}
+        renderItem={renderProduct}
+    />
+);
 
-const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
+const renderProduct = ({ item }) => {
     return (
-        <FlatList
-            keyExtractor={item => item.code}
-            data={fields.getAll()}
-            renderItem={renderProduct}
-        />
+        <ListItem
+            key={item.code}
+            title={item.code}
+            containerStyle={styles.containerProduct}
+        >
+            <Text>{item.code}</Text>
+        </ListItem>
     );
 };
 
@@ -25,8 +32,9 @@ let AddRequestForm = props => {
     const { handleSubmit, onSubmit, pushArray } = props;
 
     const handleAddProduct = barcode => {
-        console.log('ADD PRODUCT code', barcode);
-        const product = { key: barcode, code: barcode };
+        console.log('ADDING PRODUCT code', barcode);
+
+        const product = { code: barcode };
 
         pushArray('addProduct', 'products', product);
     };
@@ -69,6 +77,10 @@ const styles = StyleSheet.create({
         flex: 1,
         marginBottom: 20,
         justifyContent: 'flex-end',
+    },
+    containerProducts: {},
+    containerProduct: {
+        backgroundColor: 'grey',
     },
     submitButton: {
         fontSize: 20,

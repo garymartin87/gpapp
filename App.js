@@ -16,7 +16,7 @@ const AppNavigator = createStackNavigator(
         AddRequest: AddRequest,
     },
     {
-        initialRouteName: 'Home',
+        initialRouteName: 'AddRequest',
     }
 );
 

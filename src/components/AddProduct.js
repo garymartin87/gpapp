@@ -12,6 +12,7 @@ const AddProduct = ({ navigation, onAddProduct }) => {
     };
 
     const handleAddProduct = () => {
+        setProductId(null);
         onAddProduct(productId);
     };
 
