@@ -25,7 +25,6 @@ let AddRequestForm = props => {
             <AddProduct onAddProduct={handleAddProduct} />
 
             <View style={styles.containerButton}>
-                {/*
                 <Button
                     style={styles.submitButton}
                     icon={{
@@ -33,12 +32,9 @@ let AddRequestForm = props => {
                         size: 20,
                         color: 'white',
                     }}
-                    onPress={onSubmit(submit)}
+                    onPress={handleSubmit(onSubmit)}
                     title="Cargar Petición"
-                />*/}
-                <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-                    <Text>Submit!</Text>
-                </TouchableOpacity>
+                />
             </View>
         </View>
     );
