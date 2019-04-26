@@ -2,14 +2,16 @@ import { Input } from 'react-native-elements';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-const RenderInput = ({ input, placeholder, label }) => {
+const RenderInput = props => {
+    const { input, placeholder, label, ...inputProps } = props;
+
     return (
         <Input
+            {...inputProps}
             containerStyle={styles.containerInput}
             onChangeText={input.onChange}
             label={label}
             placeholder={placeholder}
-            {...input}
         />
     );
 };

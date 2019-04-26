@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Field, reduxForm } from 'redux-form';
 
@@ -7,11 +7,11 @@ import AddProduct from '../AddProduct';
 import RenderInput from '../RenderInput';
 
 const handleAddProduct = product => {
-    console.log('AddRequestForm onAddProduct function', product);
+    console.log('ADD PRODUCT code', product);
 };
 
 let AddRequestForm = props => {
-    const { onSubmit } = props;
+    const { handleSubmit, onSubmit } = props;
 
     return (
         <View style={styles.container}>
@@ -25,6 +25,7 @@ let AddRequestForm = props => {
             <AddProduct onAddProduct={handleAddProduct} />
 
             <View style={styles.containerButton}>
+                {/*
                 <Button
                     style={styles.submitButton}
                     icon={{
@@ -32,9 +33,12 @@ let AddRequestForm = props => {
                         size: 20,
                         color: 'white',
                     }}
-                    onPress={onSubmit}
+                    onPress={onSubmit(submit)}
                     title="Cargar Petición"
-                />
+                />*/}
+                <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+                    <Text>Submit!</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );

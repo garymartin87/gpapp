@@ -23,7 +23,7 @@ class BarcodeScanner extends Component {
                     }
                     onGoogleVisionBarcodesDetected={({ barcodes }) => {
                         console.log(
-                            'BarcodeScanner onGoogleVisionBarcodesDetected function',
+                            'BarcodeScanner BARCODE DETECTED',
                             barcodes[0]
                         );
 
@@ -33,7 +33,7 @@ class BarcodeScanner extends Component {
                             this.barcodeDetected = true;
 
                             // prevent callback multiple
-                            this.barcodeDetectedHandler(barcodes[0]);
+                            this.barcodeDetectedHandler(barcodes[0].data);
 
                             // goBack
                             const goBack = this.props.navigation.getParam(
