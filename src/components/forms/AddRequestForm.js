@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import { withNavigation } from 'react-navigation';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 
 const renderInput = ({ input, placeholder, label }) => {
     console.log(input);
@@ -21,7 +21,7 @@ const renderInput = ({ input, placeholder, label }) => {
 };
 
 const onScanBarcode = barcode => {
-    console.log('AddProducts onScanBarcode Callback', barcode);
+    console.log('AddRequest onScanBarcode Callback', barcode);
 };
 
 const handleAddProduct = () => {
@@ -72,8 +72,6 @@ let AddProductsForm = props => {
                     />
                 </View>
             </View>
-
-            <View />
 
             <View style={styles.containerButton}>
                 <Button
