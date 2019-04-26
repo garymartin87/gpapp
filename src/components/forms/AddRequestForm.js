@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm, arrayPush } from 'redux-form';
@@ -9,12 +9,13 @@ import AddProduct from '../AddProduct';
 import RenderInput from '../RenderInput';
 
 const renderProducts = ({ fields, meta: { error, submitFailed } }) => (
-    <FlatList
-        style={styles.containerProducts}
-        keyExtractor={item => item.code}
-        data={fields.getAll()}
-        renderItem={renderProduct}
-    />
+    <ScrollView style={styles.containerProducts}>
+        <FlatList
+            keyExtractor={item => item.code}
+            data={fields.getAll()}
+            renderItem={renderProduct}
+        />
+    </ScrollView>
 );
 
 const renderProduct = ({ item }) => {
@@ -52,6 +53,7 @@ let AddRequestForm = props => {
             />
 
             <AddProduct onAddProduct={handleAddProduct} />
+
             <FieldArray name="products" component={renderProducts} />
 
             <View style={styles.containerButton}>
@@ -77,12 +79,16 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     containerButton: {
-        flex: 1,
-        marginBottom: 20,
         justifyContent: 'flex-end',
     },
-    containerProducts: {},
-    containerProduct: {},
+    containerProducts: {
+        marginTop: 15,
+        marginBottom: 15,
+        flex: 1,
+    },
+    containerProduct: {
+        backgroundColor: 'grey',
+    },
     submitButton: {
         fontSize: 20,
     },
