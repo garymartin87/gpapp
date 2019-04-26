@@ -22,8 +22,8 @@ const renderProduct = ({ item }) => {
     return (
         <ListItem
             key={item.code}
-            title={item.description}
-            subtitle={item.code}
+            title={`${item.description} - ${item.code}`}
+            bottomDivider={true}
             containerStyle={styles.containerProduct}
         />
     );
@@ -84,10 +84,11 @@ const styles = StyleSheet.create({
     containerProducts: {
         marginTop: 15,
         marginBottom: 15,
+        paddingLeft: 7,
         flex: 1,
     },
     containerProduct: {
-        backgroundColor: 'grey',
+        padding: 5,
     },
     submitButton: {
         fontSize: 20,
