@@ -1,16 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import AddProductsForm from './forms/AddProductsForm';
+import AddRequestForm from './forms/AddRequestForm';
 
-const AddProducts = props => {
-    const onSubmit = values => {
-        console.log('AddProduct parent handleSubmit', values);
-    };
+const handleSubmit = values => {
+    console.log('AddRequest handleSubmit', values);
+};
 
+const AddRequest = props => {
     return (
         <View style={styles.container}>
-            <AddProductsForm onSubmit={onSubmit} />
+            <AddRequestForm onSubmit={handleSubmit} />
         </View>
     );
 };
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddProducts;
+export default AddRequest;

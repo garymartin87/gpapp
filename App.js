@@ -7,13 +7,13 @@ import reactThunk from 'redux-thunk';
 import reducers from './src/reducers';
 import Home from './src/components/Home';
 import BarcodeScanner from './src/components/BarcodeScanner';
-import AddProducts from './src/components/AddProducts';
+import AddRequest from './src/components/AddRequest';
 
 const AppNavigator = createStackNavigator(
     {
         Home: Home,
         BarcodeScanner: BarcodeScanner,
-        AddProducts: AddProducts,
+        AddRequest: AddRequest,
     },
     {
         initialRouteName: 'Home',

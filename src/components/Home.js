@@ -8,8 +8,8 @@ const Home = props => {
         <View style={styles.container}>
             <Button
                 icon={<Icon name="shopping-cart" size={15} color="white" />}
-                title=" Cargar Productos"
-                onPress={() => props.navigation.navigate('AddProducts')}
+                title=" Cargar Petición"
+                onPress={() => props.navigation.navigate('AddRequest')}
             />
         </View>
     );
