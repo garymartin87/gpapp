@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 
 import AddRequestForm from './forms/AddRequestForm';
 
 const handleSubmit = values => {
-    console.log('AddRequest handleSubmit', values);
+    Alert.alert('AddRequest handleSubmit', JSON.stringify(values));
 };
 
 const AddRequest = props => {

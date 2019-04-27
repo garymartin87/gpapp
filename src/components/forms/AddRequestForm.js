@@ -13,44 +13,37 @@ import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm, arrayPush } from 'redux-form';
 import Icon from 'react-native-vector-icons/Feather';
 import Faker from 'faker';
+import _ from 'lodash';
 
 import AddProduct from '../AddProduct';
 import RenderInput from '../RenderInput';
 
 const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
     const handleAddProduct = barcode => {
-        const product = {
-            code: barcode,
-            description: Faker.hacker.noun(),
-            quantity: 1,
-        };
-
         // validate if is product exists
-        let productExist = false;
         const products = fields.getAll();
+        const existingProduct = _.find(products, { code: barcode });
 
-        if (products) {
-            products.forEach(product => {
-                if (product.code === barcode) {
-                    productExist = true;
-                }
-            });
-        }
-
-        if (productExist) {
+        if (existingProduct) {
             Alert.alert('El producto ya existe');
         } else {
+            const product = {
+                code: barcode,
+                description: Faker.hacker.noun(),
+                quantity: 1,
+            };
+
             console.log('ADDING PRODUCT code', product);
             fields.push(product);
         }
     };
 
     const handleRemoveProduct = product => {
-        fields.remove(<product />);
-        //console.log(product);
+        console.log(product);
+        fields.remove(product.code);
     };
 
-    const renderProduct = ({ item }) => {
+    const renderProduct = ({ item, index }) => {
         return (
             <ListItem
                 key={item.code}
@@ -58,7 +51,7 @@ const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
                 bottomDivider={true}
                 containerStyle={styles.containerProduct}
                 rightIcon={
-                    <TouchableOpacity onPress={() => handleRemoveProduct(item)}>
+                    <TouchableOpacity onPress={() => fields.remove(index)}>
                         <Icon name="trash-2" color="black" size={20} />
                     </TouchableOpacity>
                 }
@@ -82,7 +75,7 @@ const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
 };
 
 let AddRequestForm = props => {
-    const { handleSubmit, onSubmit } = props;
+    const { handleSubmit, onSubmit, pristine, reset } = props;
 
     return (
         <View style={styles.container}>
@@ -97,6 +90,7 @@ let AddRequestForm = props => {
 
             <View style={styles.containerButton}>
                 <Button
+                    disabled={pristine}
                     style={styles.submitButton}
                     icon={{
                         name: 'check-circle',
