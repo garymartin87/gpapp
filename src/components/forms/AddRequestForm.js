@@ -6,10 +6,12 @@ import {
     ScrollView,
     FlatList,
     Alert,
+    TouchableOpacity,
 } from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm, arrayPush } from 'redux-form';
+import Icon from 'react-native-vector-icons/Feather';
 import Faker from 'faker';
 
 import AddProduct from '../AddProduct';
@@ -26,7 +28,6 @@ const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
         // validate if is product exists
         let productExist = false;
         const products = fields.getAll();
-        console.log(products);
 
         if (products) {
             products.forEach(product => {
@@ -44,6 +45,27 @@ const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
         }
     };
 
+    const handleRemoveProduct = product => {
+        fields.remove(<product />);
+        //console.log(product);
+    };
+
+    const renderProduct = ({ item }) => {
+        return (
+            <ListItem
+                key={item.code}
+                title={`${item.description} - ${item.code}`}
+                bottomDivider={true}
+                containerStyle={styles.containerProduct}
+                rightIcon={
+                    <TouchableOpacity onPress={() => handleRemoveProduct(item)}>
+                        <Icon name="trash-2" color="black" size={20} />
+                    </TouchableOpacity>
+                }
+            />
+        );
+    };
+
     return (
         <View style={styles.containerProducts}>
             <AddProduct onAddProduct={handleAddProduct} />
@@ -56,17 +78,6 @@ const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
                 />
             </ScrollView>
         </View>
-    );
-};
-
-const renderProduct = ({ item }) => {
-    return (
-        <ListItem
-            key={item.code}
-            title={`${item.description} - ${item.code}`}
-            bottomDivider={true}
-            containerStyle={styles.containerProduct}
-        />
     );
 };
 
@@ -104,7 +115,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        padding: 15,
+        padding: 5,
     },
     containerButton: {
         justifyContent: 'flex-end',
@@ -116,7 +127,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     containerProduct: {
-        padding: 5,
+        padding: 10,
+        marginLeft: 10,
+        marginRight: 10,
     },
     submitButton: {
         fontSize: 20,
