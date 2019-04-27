@@ -32,6 +32,7 @@ const AddProduct = ({ navigation, onAddProduct }) => {
                 <Button
                     icon={<Icon name="plus-circle" color="white" size={20} />}
                     onPress={handleAddProduct}
+                    disabled={!productId}
                 />
             </View>
 

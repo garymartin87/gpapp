@@ -36,10 +36,10 @@ let AddRequestForm = props => {
         const product = {
             code: barcode,
             description: Faker.hacker.noun(),
+            quantity: 1,
         };
 
         console.log('ADDING PRODUCT code', product);
-
         pushArray('addProduct', 'products', product);
     };
 
