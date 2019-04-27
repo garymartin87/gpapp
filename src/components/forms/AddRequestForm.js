@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Text,
+    ScrollView,
+    FlatList,
+    Alert,
+} from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm, arrayPush } from 'redux-form';
@@ -8,15 +15,49 @@ import Faker from 'faker';
 import AddProduct from '../AddProduct';
 import RenderInput from '../RenderInput';
 
-const renderProducts = ({ fields, meta: { error, submitFailed } }) => (
-    <ScrollView style={styles.containerProducts}>
-        <FlatList
-            keyExtractor={item => item.code}
-            data={fields.getAll()}
-            renderItem={renderProduct}
-        />
-    </ScrollView>
-);
+const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
+    const handleAddProduct = barcode => {
+        const product = {
+            code: barcode,
+            description: Faker.hacker.noun(),
+            quantity: 1,
+        };
+
+        // validate if is product exists
+        let productExist = false;
+        const products = fields.getAll();
+        console.log(products);
+
+        if (products) {
+            products.forEach(product => {
+                if (product.code === barcode) {
+                    productExist = true;
+                }
+            });
+        }
+
+        if (productExist) {
+            Alert.alert('El producto ya existe');
+        } else {
+            console.log('ADDING PRODUCT code', product);
+            fields.push(product);
+        }
+    };
+
+    return (
+        <View style={styles.containerProducts}>
+            <AddProduct onAddProduct={handleAddProduct} />
+
+            <ScrollView>
+                <FlatList
+                    keyExtractor={item => item.code}
+                    data={fields.getAll()}
+                    renderItem={renderProduct}
+                />
+            </ScrollView>
+        </View>
+    );
+};
 
 const renderProduct = ({ item }) => {
     return (
@@ -30,18 +71,7 @@ const renderProduct = ({ item }) => {
 };
 
 let AddRequestForm = props => {
-    const { handleSubmit, onSubmit, pushArray } = props;
-
-    const handleAddProduct = barcode => {
-        const product = {
-            code: barcode,
-            description: Faker.hacker.noun(),
-            quantity: 1,
-        };
-
-        console.log('ADDING PRODUCT code', product);
-        pushArray('addProduct', 'products', product);
-    };
+    const { handleSubmit, onSubmit } = props;
 
     return (
         <View style={styles.container}>
@@ -51,8 +81,6 @@ let AddRequestForm = props => {
                 placeholder="081291051"
                 label="Número de cliente"
             />
-
-            <AddProduct onAddProduct={handleAddProduct} />
 
             <FieldArray name="products" component={renderProducts} />
 
@@ -95,9 +123,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapDispatchToProps = {
-    pushArray: arrayPush,
-};
+const mapDispatchToProps = {};
 
 AddRequestForm = reduxForm({
     // a unique name for the form
