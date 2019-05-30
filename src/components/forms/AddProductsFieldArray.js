@@ -4,7 +4,7 @@ import { Alert, FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import Faker from 'faker';
 
 import AddProduct from '../AddProduct';
-import RenderProduct from './RenderProductListItem';
+import RenderProductItem from './RenderProductItem';
 
 const AddProductsFieldArray = ({ fields, meta: { error, submitFailed } }) => {
     const handleAddProduct = barcode => {
@@ -39,7 +39,7 @@ const AddProductsFieldArray = ({ fields, meta: { error, submitFailed } }) => {
                     keyExtractor={item => item.code}
                     data={fields.getAll()}
                     renderItem={props =>
-                        RenderProduct({
+                        RenderProductItem({
                             ...props,
                             onRemove: handleRemoveProduct,
                         })
