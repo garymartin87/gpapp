@@ -138,5 +138,5 @@ AddRequestForm = reduxForm({
 
 const selector = formValueSelector('addRequestForm');
 export default connect(state => {
-    return {};
+    return { products: selector(state, 'products') };
 })(AddRequestForm);
