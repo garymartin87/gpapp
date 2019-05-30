@@ -1,73 +1,11 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Text,
-    ScrollView,
-    FlatList,
-    Alert,
-    TouchableOpacity,
-} from 'react-native';
-import { Button, ListItem } from 'react-native-elements';
+import { StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm, arrayPush } from 'redux-form';
-import Icon from 'react-native-vector-icons/Feather';
-import Faker from 'faker';
-import _ from 'lodash';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 
-import AddProduct from '../AddProduct';
 import RenderInput from '../RenderInput';
-
-const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
-    const handleAddProduct = barcode => {
-        // validate if is product exists
-        const products = fields.getAll();
-        const existingProduct = _.find(products, { code: barcode });
-
-        if (existingProduct) {
-            Alert.alert('El producto ya existe');
-        } else {
-            const product = {
-                code: barcode,
-                description: Faker.hacker.noun(),
-                quantity: 1,
-            };
-
-            console.log('ADDING PRODUCT code', product);
-            fields.push(product);
-        }
-    };
-
-    const renderProduct = ({ item, index }) => {
-        return (
-            <ListItem
-                key={item.code}
-                title={`${item.description} - ${item.code}`}
-                bottomDivider={true}
-                containerStyle={styles.containerProduct}
-                rightIcon={
-                    <TouchableOpacity onPress={() => fields.remove(index)}>
-                        <Icon name="trash-2" color="black" size={20} />
-                    </TouchableOpacity>
-                }
-            />
-        );
-    };
-
-    return (
-        <View style={styles.containerProducts}>
-            <AddProduct onAddProduct={handleAddProduct} />
-
-            <ScrollView>
-                <FlatList
-                    keyExtractor={item => item.code}
-                    data={fields.getAll()}
-                    renderItem={renderProduct}
-                />
-            </ScrollView>
-        </View>
-    );
-};
+import AddProductsFieldArray from './AddProductsFieldArray';
 
 let AddRequestForm = props => {
     const { handleSubmit, onSubmit, pristine, reset } = props;
@@ -81,7 +19,7 @@ let AddRequestForm = props => {
                 label="Número de cliente"
             />
 
-            <FieldArray name="products" component={renderProducts} />
+            <FieldArray name="products" component={AddProductsFieldArray} />
 
             <View style={styles.containerButton}>
                 <Button
@@ -109,17 +47,6 @@ const styles = StyleSheet.create({
     containerButton: {
         justifyContent: 'flex-end',
     },
-    containerProducts: {
-        marginTop: 15,
-        marginBottom: 15,
-        paddingLeft: 7,
-        flex: 1,
-    },
-    containerProduct: {
-        padding: 10,
-        marginLeft: 10,
-        marginRight: 10,
-    },
     submitButton: {
         fontSize: 20,
     },
@@ -129,7 +56,7 @@ const mapDispatchToProps = {};
 
 AddRequestForm = reduxForm({
     // a unique name for the form
-    form: 'addProduct',
+    form: 'addRequestForm',
     initialValues: {
         products: [],
     },
