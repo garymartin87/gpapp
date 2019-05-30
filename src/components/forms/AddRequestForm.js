@@ -38,11 +38,6 @@ const renderProducts = ({ fields, meta: { error, submitFailed } }) => {
         }
     };
 
-    const handleRemoveProduct = product => {
-        console.log(product);
-        fields.remove(product.code);
-    };
-
     const renderProduct = ({ item, index }) => {
         return (
             <ListItem
@@ -135,6 +130,9 @@ const mapDispatchToProps = {};
 AddRequestForm = reduxForm({
     // a unique name for the form
     form: 'addProduct',
+    initialValues: {
+        products: [],
+    },
 })(AddRequestForm);
 
 export default connect(
