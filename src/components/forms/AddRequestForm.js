@@ -1,14 +1,83 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import {
+    Field,
+    FieldArray,
+    reduxForm,
+    formValueSelector,
+    arrayPush,
+} from 'redux-form';
 
 import RenderInput from '../RenderInput';
 import AddProductsFieldArray from './AddProductsFieldArray';
+import AddProduct from '../AddProduct';
+import _ from 'lodash';
+import Faker from 'faker';
 
 let AddRequestForm = props => {
-    const { handleSubmit, onSubmit, pristine, reset } = props;
+    const {
+        handleSubmit,
+        onSubmit,
+        pristine,
+        reset,
+        pushArray,
+        products,
+    } = props;
+
+    const handleAddProduct = barcode => {
+        // validate if is product exists
+        const product = {
+            code: barcode,
+            description: Faker.hacker.noun(),
+            quantity: 1,
+        };
+
+        console.log(pushArray);
+
+        pushArray('addRequestForm', 'products', product);
+
+        console.log(products);
+        /*
+        console.log(products);
+        products.forEach(product => {
+            console.log(product);
+        });
+        */
+        /*const existingProduct = _.find(products, { code: barcode });
+        if (existingProduct) {
+            Alert.alert('El producto ya existe');
+        } else {
+            const product = {
+                code: barcode,
+                description: Faker.hacker.noun(),
+                quantity: 1,
+            };
+
+            console.log('ADDING PRODUCT code', product);
+            props.pushArray('addRequestForm', 'products', product);
+        }
+        */
+
+        /*
+        const products = fields.getAll();
+        const existingProduct = _.find(products, { code: barcode });
+
+        if (existingProduct) {
+            Alert.alert('El producto ya existe');
+        } else {
+            const product = {
+                code: barcode,
+                description: Faker.hacker.noun(),
+                quantity: 1,
+            };
+
+            console.log('ADDING PRODUCT code', product);
+            this.props.pushArray('addRequestForm', 'products', product);
+        }
+        */
+    };
 
     return (
         <View style={styles.container}>
@@ -19,7 +88,10 @@ let AddRequestForm = props => {
                 label="Número de cliente"
             />
 
-            <FieldArray name="products" component={AddProductsFieldArray} />
+            <View style={styles.containerProducts}>
+                <AddProduct onAddProduct={handleAddProduct} />
+                <FieldArray name="products" component={AddProductsFieldArray} />
+            </View>
 
             <View style={styles.containerButton}>
                 <Button
@@ -50,9 +122,17 @@ const styles = StyleSheet.create({
     submitButton: {
         fontSize: 20,
     },
+    containerProducts: {
+        marginTop: 15,
+        marginBottom: 15,
+        paddingLeft: 7,
+        flex: 1,
+    },
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    pushArray: arrayPush,
+};
 
 AddRequestForm = reduxForm({
     // a unique name for the form
@@ -62,6 +142,7 @@ AddRequestForm = reduxForm({
     },
 })(AddRequestForm);
 
+const selector = formValueSelector('addRequestForm');
 export default connect(
     null,
     mapDispatchToProps
