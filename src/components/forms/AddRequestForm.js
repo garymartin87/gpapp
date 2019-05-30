@@ -22,8 +22,8 @@ let AddRequestForm = props => {
         onSubmit,
         pristine,
         reset,
-        pushArray,
         products,
+        dispatch,
     } = props;
 
     const handleAddProduct = barcode => {
@@ -34,9 +34,7 @@ let AddRequestForm = props => {
             quantity: 1,
         };
 
-        console.log(pushArray);
-
-        pushArray('addRequestForm', 'products', product);
+        dispatch(arrayPush('addRequestForm', 'products', product));
 
         console.log(products);
         /*
@@ -130,10 +128,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapDispatchToProps = {
-    pushArray: arrayPush,
-};
-
 AddRequestForm = reduxForm({
     // a unique name for the form
     form: 'addRequestForm',
@@ -143,7 +137,6 @@ AddRequestForm = reduxForm({
 })(AddRequestForm);
 
 const selector = formValueSelector('addRequestForm');
-export default connect(
-    null,
-    mapDispatchToProps
-)(AddRequestForm);
+export default connect(state => {
+    return {};
+})(AddRequestForm);
