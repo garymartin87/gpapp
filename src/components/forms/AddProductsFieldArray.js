@@ -1,18 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
-import {
-    Alert,
-    FlatList,
-    ScrollView,
-    TouchableOpacity,
-    StyleSheet,
-    View,
-} from 'react-native';
+import { Alert, FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import Faker from 'faker';
-import { ListItem } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Feather';
 
 import AddProduct from '../AddProduct';
+import RenderProduct from './RenderProductListItem';
 
 const AddProductsFieldArray = ({ fields, meta: { error, submitFailed } }) => {
     const handleAddProduct = barcode => {
@@ -34,20 +26,8 @@ const AddProductsFieldArray = ({ fields, meta: { error, submitFailed } }) => {
         }
     };
 
-    const renderProduct = ({ item, index }) => {
-        return (
-            <ListItem
-                key={item.code}
-                title={`${item.description} - ${item.code}`}
-                bottomDivider={true}
-                containerStyle={styles.containerProduct}
-                rightIcon={
-                    <TouchableOpacity onPress={() => fields.remove(index)}>
-                        <Icon name="trash-2" color="black" size={20} />
-                    </TouchableOpacity>
-                }
-            />
-        );
+    const handleRemoveProduct = index => {
+        fields.remove(index);
     };
 
     return (
@@ -58,7 +38,12 @@ const AddProductsFieldArray = ({ fields, meta: { error, submitFailed } }) => {
                 <FlatList
                     keyExtractor={item => item.code}
                     data={fields.getAll()}
-                    renderItem={renderProduct}
+                    renderItem={props =>
+                        RenderProduct({
+                            ...props,
+                            onRemove: handleRemoveProduct,
+                        })
+                    }
                 />
             </ScrollView>
         </View>
@@ -71,11 +56,6 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         paddingLeft: 7,
         flex: 1,
-    },
-    containerProduct: {
-        padding: 10,
-        marginLeft: 10,
-        marginRight: 10,
     },
 });
 
