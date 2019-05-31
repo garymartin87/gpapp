@@ -4,7 +4,7 @@ import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 
-import { addProduct } from '../../actions/AddRequestFormActions';
+import { addProduct, removeProduct } from '../../actions/AddRequestFormActions';
 import RenderInput from '../RenderInput';
 import AddProductsFieldArray from './AddProductsFieldArray';
 import AddProduct from '../AddProduct';
@@ -16,58 +16,15 @@ let AddRequestForm = props => {
         pristine,
         reset,
         addProductActionCreator,
+        removeProductActionCreator,
     } = props;
 
     const handleAddProduct = barcode => {
         addProductActionCreator(barcode);
-        // validate if is product exists
-        /*
-        const product = {
-            code: barcode,
-            description: Faker.hacker.noun(),
-            quantity: 1,
-        };
+    };
 
-        dispatch(arrayPush('addRequestForm', 'products', product));
-        */
-        //console.log(products);
-        /*
-        console.log(products);
-        products.forEach(product => {
-            console.log(product);
-        });
-        */
-        /*const existingProduct = _.find(products, { code: barcode });
-        if (existingProduct) {
-            Alert.alert('El producto ya existe');
-        } else {
-            const product = {
-                code: barcode,
-                description: Faker.hacker.noun(),
-                quantity: 1,
-            };
-
-            console.log('ADDING PRODUCT code', product);
-            props.pushArray('addRequestForm', 'products', product);
-        }
-        */
-        /*
-        const products = fields.getAll();
-        const existingProduct = _.find(products, { code: barcode });
-
-        if (existingProduct) {
-            Alert.alert('El producto ya existe');
-        } else {
-            const product = {
-                code: barcode,
-                description: Faker.hacker.noun(),
-                quantity: 1,
-            };
-
-            console.log('ADDING PRODUCT code', product);
-            this.props.pushArray('addRequestForm', 'products', product);
-        }
-        */
+    const handleRemoveProduct = index => {
+        removeProductActionCreator(index);
     };
 
     return (
@@ -81,7 +38,12 @@ let AddRequestForm = props => {
 
             <View style={styles.containerProducts}>
                 <AddProduct onAddProduct={handleAddProduct} />
-                <FieldArray name="products" component={AddProductsFieldArray} />
+                <FieldArray
+                    name="products"
+                    component={props =>
+                        AddProductsFieldArray({ ...props, handleRemoveProduct })
+                    }
+                />
             </View>
 
             <View style={styles.containerButton}>
@@ -135,5 +97,8 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { addProductActionCreator: addProduct }
+    {
+        addProductActionCreator: addProduct,
+        removeProductActionCreator: removeProduct,
+    }
 )(AddRequestForm);

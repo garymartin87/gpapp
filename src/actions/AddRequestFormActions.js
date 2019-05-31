@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { formValueSelector, arrayPush } from 'redux-form';
+import { formValueSelector, arrayPush, arrayRemove } from 'redux-form';
 
 import gpAppApi from '../apis/gpapp';
 import {
@@ -64,4 +64,8 @@ export const addProductDoesntExist = () => async (dispatch, getState) => {
     };
 
     return action;
+};
+
+export const removeProduct = index => async (dispatch, getState) => {
+    dispatch(arrayRemove('addRequestForm', 'products', index));
 };

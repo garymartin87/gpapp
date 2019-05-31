@@ -3,11 +3,11 @@ import { FlatList, ScrollView } from 'react-native';
 
 import RenderProductItem from './RenderProductItem';
 
-const AddProductsFieldArray = ({ fields, meta: { error, submitFailed } }) => {
-    const handleRemoveProduct = index => {
-        fields.remove(index);
-    };
-
+const AddProductsFieldArray = ({
+    fields,
+    meta: { error, submitFailed },
+    handleRemoveProduct,
+}) => {
     return (
         <ScrollView>
             <FlatList
