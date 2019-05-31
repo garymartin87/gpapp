@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Select, Option } from 'react-native-select-lists';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { FieldArray, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 
 import { addProduct, removeProduct } from '../../actions/addRequestFormActions';
 import { fetchClients } from '../../actions/clientsActions';
@@ -26,7 +26,6 @@ let AddRequestForm = props => {
 
     useEffect(() => {
         if (!clients) {
-            console.log('!clients');
             fetchClientsActionCreator();
         }
     }, []);
@@ -55,16 +54,27 @@ let AddRequestForm = props => {
                     <Text>Loading...</Text>
                 </View>
             ) : (
-                <Select>
-                    <Option value="">Seleccione un cliente</Option>
-                    {clients.map((client, index) => {
+                <Field
+                    name="clientNumber"
+                    component={({ input: { value, onChange } }) => {
                         return (
-                            <Option key={index} value={client.code}>
-                                {client.name}
-                            </Option>
+                            <Select
+                                onSelect={value => {
+                                    console.log(value);
+                                    onChange(value);
+                                }}
+                            >
+                                {clients.map((client, index) => {
+                                    return (
+                                        <Option key={index} value={client.code}>
+                                            {client.name}
+                                        </Option>
+                                    );
+                                })}
+                            </Select>
                         );
-                    })}
-                </Select>
+                    }}
+                />
             )}
 
             <View style={styles.containerProducts}>
