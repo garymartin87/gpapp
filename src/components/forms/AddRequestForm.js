@@ -1,14 +1,31 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 
+import { addProduct, removeProduct } from '../../actions/AddRequestFormActions';
 import RenderInput from '../RenderInput';
 import AddProductsFieldArray from './AddProductsFieldArray';
+import AddProduct from '../AddProduct';
 
 let AddRequestForm = props => {
-    const { handleSubmit, onSubmit, pristine, reset } = props;
+    const {
+        handleSubmit,
+        onSubmit,
+        pristine,
+        reset,
+        addProductActionCreator,
+        removeProductActionCreator,
+    } = props;
+
+    const handleAddProduct = barcode => {
+        addProductActionCreator(barcode);
+    };
+
+    const handleRemoveProduct = index => {
+        removeProductActionCreator(index);
+    };
 
     return (
         <View style={styles.container}>
@@ -19,7 +36,15 @@ let AddRequestForm = props => {
                 label="Número de cliente"
             />
 
-            <FieldArray name="products" component={AddProductsFieldArray} />
+            <View style={styles.containerProducts}>
+                <AddProduct onAddProduct={handleAddProduct} />
+                <FieldArray
+                    name="products"
+                    component={props =>
+                        AddProductsFieldArray({ ...props, handleRemoveProduct })
+                    }
+                />
+            </View>
 
             <View style={styles.containerButton}>
                 <Button
@@ -50,9 +75,13 @@ const styles = StyleSheet.create({
     submitButton: {
         fontSize: 20,
     },
+    containerProducts: {
+        marginTop: 15,
+        marginBottom: 15,
+        paddingLeft: 7,
+        flex: 1,
+    },
 });
-
-const mapDispatchToProps = {};
 
 AddRequestForm = reduxForm({
     // a unique name for the form
@@ -62,7 +91,14 @@ AddRequestForm = reduxForm({
     },
 })(AddRequestForm);
 
+const mapStateToProps = state => {
+    return {};
+};
+
 export default connect(
-    null,
-    mapDispatchToProps
+    mapStateToProps,
+    {
+        addProductActionCreator: addProduct,
+        removeProductActionCreator: removeProduct,
+    }
 )(AddRequestForm);
