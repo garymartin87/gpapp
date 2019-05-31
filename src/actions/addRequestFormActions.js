@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { formValueSelector, arrayPush, arrayRemove, change } from 'redux-form';
 
 import gpAppApi from '../apis/gpapp';
-import { alertUser } from './AlertUserActions';
+import { alertUser } from './alertUserActions';
 import {
     ADD_PRODUCT_REQUESTED,
     ADD_PRODUCT_DOESNT_EXIST,
@@ -10,8 +10,6 @@ import {
 } from './types';
 
 export const addProduct = code => async (dispatch, getState) => {
-    console.log('ACTION CREATOR addProduct');
-
     dispatch({
         type: ADD_PRODUCT_REQUESTED,
     });
@@ -19,12 +17,10 @@ export const addProduct = code => async (dispatch, getState) => {
     const selector = formValueSelector('addRequestForm');
     const state = getState();
     const products = selector(state, 'products');
-    console.log('products', typeof products);
 
     const existingProduct = _.find(products, product => {
         return product.code == code.toUpperCase();
     });
-    console.log('existingProduct', existingProduct);
 
     if (existingProduct) {
         dispatch(
@@ -36,7 +32,6 @@ export const addProduct = code => async (dispatch, getState) => {
     } else {
         try {
             const { data } = await gpAppApi.get(`/iv00101/${code}`);
-            console.log('product found', data);
             dispatch(
                 arrayPush('addRequestForm', 'products', {
                     code: data.itemnmbr.trim(),

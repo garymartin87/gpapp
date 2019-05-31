@@ -1,10 +1,13 @@
-import React from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { Select, Option } from 'react-native-select-lists';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { FieldArray, reduxForm } from 'redux-form';
 
-import { addProduct, removeProduct } from '../../actions/AddRequestFormActions';
+import { addProduct, removeProduct } from '../../actions/addRequestFormActions';
+import { fetchClients } from '../../actions/clientsActions';
+
 import RenderInput from '../RenderInput';
 import AddProductsFieldArray from './AddProductsFieldArray';
 import AddProduct from '../AddProduct';
@@ -17,7 +20,16 @@ let AddRequestForm = props => {
         reset,
         addProductActionCreator,
         removeProductActionCreator,
+        fetchClientsActionCreator,
+        clients,
     } = props;
+
+    useEffect(() => {
+        if (!clients) {
+            console.log('!clients');
+            fetchClientsActionCreator();
+        }
+    }, []);
 
     const handleAddProduct = barcode => {
         addProductActionCreator(barcode);
@@ -29,12 +41,31 @@ let AddRequestForm = props => {
 
     return (
         <View style={styles.container}>
+            {/*
             <Field
                 component={RenderInput}
                 name="clientNumber"
                 placeholder="081291051"
                 label="Número de cliente"
             />
+            */}
+
+            {clients === null ? (
+                <View>
+                    <Text>Loading...</Text>
+                </View>
+            ) : (
+                <Select>
+                    <Option value="">Seleccione un cliente</Option>
+                    {clients.map((client, index) => {
+                        return (
+                            <Option key={index} value={client.code}>
+                                {client.name}
+                            </Option>
+                        );
+                    })}
+                </Select>
+            )}
 
             <View style={styles.containerProducts}>
                 <AddProduct onAddProduct={handleAddProduct} />
@@ -45,7 +76,6 @@ let AddRequestForm = props => {
                     }
                 />
             </View>
-
             <View style={styles.containerButton}>
                 <Button
                     disabled={pristine}
@@ -92,7 +122,9 @@ AddRequestForm = reduxForm({
 })(AddRequestForm);
 
 const mapStateToProps = state => {
-    return {};
+    return {
+        clients: state.clients.clients,
+    };
 };
 
 export default connect(
@@ -100,5 +132,6 @@ export default connect(
     {
         addProductActionCreator: addProduct,
         removeProductActionCreator: removeProduct,
+        fetchClientsActionCreator: fetchClients,
     }
 )(AddRequestForm);
