@@ -2,19 +2,12 @@ import React from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import {
-    Field,
-    FieldArray,
-    reduxForm,
-    formValueSelector,
-    arrayPush,
-} from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 
+import { addProduct } from '../../actions/AddRequestFormActions';
 import RenderInput from '../RenderInput';
 import AddProductsFieldArray from './AddProductsFieldArray';
 import AddProduct from '../AddProduct';
-import _ from 'lodash';
-import Faker from 'faker';
 
 let AddRequestForm = props => {
     const {
@@ -22,12 +15,13 @@ let AddRequestForm = props => {
         onSubmit,
         pristine,
         reset,
-        products,
-        dispatch,
+        addProductActionCreator,
     } = props;
 
     const handleAddProduct = barcode => {
+        addProductActionCreator(barcode);
         // validate if is product exists
+        /*
         const product = {
             code: barcode,
             description: Faker.hacker.noun(),
@@ -35,8 +29,8 @@ let AddRequestForm = props => {
         };
 
         dispatch(arrayPush('addRequestForm', 'products', product));
-
-        console.log(products);
+        */
+        //console.log(products);
         /*
         console.log(products);
         products.forEach(product => {
@@ -57,7 +51,6 @@ let AddRequestForm = props => {
             props.pushArray('addRequestForm', 'products', product);
         }
         */
-
         /*
         const products = fields.getAll();
         const existingProduct = _.find(products, { code: barcode });
@@ -136,7 +129,11 @@ AddRequestForm = reduxForm({
     },
 })(AddRequestForm);
 
-const selector = formValueSelector('addRequestForm');
-export default connect(state => {
-    return { products: selector(state, 'products') };
-})(AddRequestForm);
+const mapStateToProps = state => {
+    return {};
+};
+
+export default connect(
+    mapStateToProps,
+    { addProductActionCreator: addProduct }
+)(AddRequestForm);
