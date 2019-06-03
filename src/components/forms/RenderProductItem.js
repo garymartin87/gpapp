@@ -7,7 +7,7 @@ const RenderProduct = ({ item, index, onRemove }) => {
     return (
         <ListItem
             key={item.code}
-            title={`${item.description} - ${item.code}`}
+            title={`#${item.code} - ${item.description}`}
             bottomDivider={true}
             containerStyle={styles.containerProduct}
             rightIcon={

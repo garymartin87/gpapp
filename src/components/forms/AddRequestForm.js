@@ -38,6 +38,24 @@ let AddRequestForm = props => {
         removeProductActionCreator(index);
     };
 
+    const renderClientSelectOptions = () => {
+        let options = clients.map((client, index) => {
+            return (
+                <Option key={index + 1} value={client.code}>
+                    {client.name}
+                </Option>
+            );
+        });
+
+        options.unshift(
+            <Option key={0} value={0}>
+                - Seleccione un cliente -
+            </Option>
+        );
+
+        return options;
+    };
+
     return (
         <View style={styles.container}>
             {/*
@@ -66,21 +84,12 @@ let AddRequestForm = props => {
                                     caretColor="#86939e"
                                     selectStyle={styles.select}
                                     listHeight={300}
+                                    listStyle={styles.selectList}
                                     onSelect={value => {
-                                        console.log(value);
                                         onChange(value);
                                     }}
                                 >
-                                    {clients.map((client, index) => {
-                                        return (
-                                            <Option
-                                                key={index}
-                                                value={client.code}
-                                            >
-                                                {client.name}
-                                            </Option>
-                                        );
-                                    })}
+                                    {renderClientSelectOptions()}
                                 </Select>
                             );
                         }}
@@ -144,12 +153,17 @@ const styles = StyleSheet.create({
         fontFamily: 'sans-serif',
         fontWeight: 'bold',
     },
+    selectList: {
+        zIndex: 999,
+        position: 'absolute',
+    },
 });
 
 AddRequestForm = reduxForm({
     // a unique name for the form
     form: 'addRequestForm',
     initialValues: {
+        clientNumber: 0,
         products: [],
     },
 })(AddRequestForm);

@@ -21,8 +21,8 @@ const AddProduct = ({ navigation, onAddProduct }) => {
             <View style={styles.containerProductId}>
                 <Input
                     name="productId"
-                    placeholder="7792081291051"
-                    label="Código de producto"
+                    placeholder="Codigo del producto"
+                    label="Productos"
                     value={productId}
                     onChangeText={handleOnChangeProductId}
                 />

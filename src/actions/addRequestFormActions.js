@@ -35,7 +35,7 @@ export const addProduct = code => async (dispatch, getState) => {
             dispatch(
                 arrayPush('addRequestForm', 'products', {
                     code: data.itemnmbr.trim(),
-                    description: data.itemnmbr.trim(),
+                    description: data.itemdesc.trim(),
                 })
             );
 
