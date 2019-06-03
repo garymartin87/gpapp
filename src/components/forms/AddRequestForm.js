@@ -51,30 +51,41 @@ let AddRequestForm = props => {
 
             {clients === null ? (
                 <View>
-                    <Text>Loading...</Text>
+                    <Text style={styles.placeholder}>Cargando clientes...</Text>
                 </View>
             ) : (
-                <Field
-                    name="clientNumber"
-                    component={({ input: { value, onChange } }) => {
-                        return (
-                            <Select
-                                onSelect={value => {
-                                    console.log(value);
-                                    onChange(value);
-                                }}
-                            >
-                                {clients.map((client, index) => {
-                                    return (
-                                        <Option key={index} value={client.code}>
-                                            {client.name}
-                                        </Option>
-                                    );
-                                })}
-                            </Select>
-                        );
-                    }}
-                />
+                <View>
+                    <Text style={styles.placeholder}>Cliente</Text>
+                    <Field
+                        name="clientNumber"
+                        component={({ input: { value, onChange } }) => {
+                            return (
+                                <Select
+                                    caret="down"
+                                    caretSize={10}
+                                    caretColor="#86939e"
+                                    selectStyle={styles.select}
+                                    listHeight={300}
+                                    onSelect={value => {
+                                        console.log(value);
+                                        onChange(value);
+                                    }}
+                                >
+                                    {clients.map((client, index) => {
+                                        return (
+                                            <Option
+                                                key={index}
+                                                value={client.code}
+                                            >
+                                                {client.name}
+                                            </Option>
+                                        );
+                                    })}
+                                </Select>
+                            );
+                        }}
+                    />
+                </View>
             )}
 
             <View style={styles.containerProducts}>
@@ -120,6 +131,18 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         paddingLeft: 7,
         flex: 1,
+    },
+    select: {
+        marginLeft: 15,
+        marginRight: 10,
+    },
+    placeholder: {
+        marginLeft: 15,
+        marginBottom: 16,
+        fontSize: 16,
+        color: '#86939e',
+        fontFamily: 'sans-serif',
+        fontWeight: 'bold',
     },
 });
 

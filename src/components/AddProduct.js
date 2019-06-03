@@ -55,6 +55,7 @@ const AddProduct = ({ navigation, onAddProduct }) => {
 const styles = StyleSheet.create({
     containerProduct: {
         flexDirection: 'row',
+        marginRight: 10,
     },
     containerProductId: {
         flex: 4,
