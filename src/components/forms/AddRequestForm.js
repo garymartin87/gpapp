@@ -12,11 +12,23 @@ import RenderInput from '../RenderInput';
 import AddProductsFieldArray from './AddProductsFieldArray';
 import AddProduct from '../AddProduct';
 
+const checkValidClientNumber = value => {
+    const error = value ? undefined : 'El campo es Requerido';
+    return error;
+};
+
+const checkValidProducts = value => {
+    const error =
+        value && value.length > 0 ? undefined : 'Cargue al menos un producto';
+    return error;
+};
+
 let AddRequestForm = props => {
     const {
         handleSubmit,
         onSubmit,
         pristine,
+        invalid,
         reset,
         addProductActionCreator,
         removeProductActionCreator,
@@ -73,24 +85,38 @@ let AddRequestForm = props => {
                 </View>
             ) : (
                 <View>
+                    {/*TODO refactor renderInput component so it accept select component*/}
                     <Text style={styles.placeholder}>Cliente</Text>
                     <Field
                         name="clientNumber"
-                        component={({ input: { value, onChange } }) => {
+                        validate={[checkValidClientNumber]}
+                        component={({
+                            input: { value, onChange },
+                            meta: { touched, error, warning },
+                        }) => {
                             return (
-                                <Select
-                                    caret="down"
-                                    caretSize={10}
-                                    caretColor="#86939e"
-                                    selectStyle={styles.select}
-                                    listHeight={300}
-                                    listStyle={styles.selectList}
-                                    onSelect={value => {
-                                        onChange(value);
-                                    }}
-                                >
-                                    {renderClientSelectOptions()}
-                                </Select>
+                                <View>
+                                    <Select
+                                        caret="down"
+                                        caretSize={10}
+                                        caretColor="#86939e"
+                                        selectStyle={styles.select}
+                                        listHeight={300}
+                                        listStyle={styles.selectList}
+                                        onSelect={value => {
+                                            onChange(value);
+                                        }}
+                                    >
+                                        {renderClientSelectOptions()}
+                                    </Select>
+
+                                    {/* ToDo check this */}
+                                    {touched &&
+                                        ((error && <Text>{error}</Text>) ||
+                                            (warning && (
+                                                <Text>{warning}</Text>
+                                            )))}
+                                </View>
                             );
                         }}
                     />
@@ -101,6 +127,7 @@ let AddRequestForm = props => {
                 <AddProduct onAddProduct={handleAddProduct} />
                 <FieldArray
                     name="products"
+                    validate={[checkValidProducts]}
                     component={props =>
                         AddProductsFieldArray({ ...props, handleRemoveProduct })
                     }
@@ -108,7 +135,7 @@ let AddRequestForm = props => {
             </View>
             <View style={styles.containerButton}>
                 <Button
-                    disabled={pristine}
+                    disabled={pristine || invalid}
                     style={styles.submitButton}
                     icon={{
                         name: 'check-circle',

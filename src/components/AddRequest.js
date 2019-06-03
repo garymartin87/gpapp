@@ -4,7 +4,7 @@ import { StyleSheet, View, Alert } from 'react-native';
 import AddRequestForm from './forms/AddRequestForm';
 
 const handleSubmit = values => {
-    Alert.alert('AddRequest handleSubmit', JSON.stringify(values));
+    Alert.alert('ORDEN', JSON.stringify(values));
 };
 
 const AddRequest = props => {
