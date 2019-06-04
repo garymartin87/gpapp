@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, ScrollView } from 'react-native';
+import { FlatList, ScrollView, View, StyleSheet } from 'react-native';
 
 import RenderProductItem from './RenderProductItem';
 
@@ -8,11 +8,12 @@ const AddProductsFieldArray = ({
     meta: { error, submitFailed },
     handleRemoveProduct,
 }) => {
+    const products = fields.getAll();
     return (
         <ScrollView>
             <FlatList
                 keyExtractor={item => item.code}
-                data={fields.getAll()}
+                data={products}
                 renderItem={props =>
                     RenderProductItem({
                         ...props,

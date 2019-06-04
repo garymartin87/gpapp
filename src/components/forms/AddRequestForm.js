@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Select, Option } from 'react-native-select-lists';
 import { Button } from 'react-native-elements';
@@ -7,8 +7,6 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 
 import { addProduct, removeProduct } from '../../actions/addRequestFormActions';
 import { fetchClients } from '../../actions/clientsActions';
-
-import RenderInput from '../RenderInput';
 import AddProductsFieldArray from './AddProductsFieldArray';
 import AddProduct from '../AddProduct';
 
@@ -21,6 +19,43 @@ const checkValidProducts = value => {
     const error =
         value && value.length > 0 ? undefined : 'Cargue al menos un producto';
     return error;
+};
+
+const ClientSelect = ({
+    input: { value, onChange },
+    meta: { error, warning },
+    clients,
+}) => {
+    const [touched, setTouched] = useState(false);
+
+    return (
+        <View>
+            <Select
+                caret="down"
+                caretSize={10}
+                caretColor="#86939e"
+                selectStyle={styles.select}
+                listHeight={300}
+                listStyle={styles.selectList}
+                onSelect={value => {
+                    setTouched(true);
+                    onChange(value);
+                }}
+            >
+                {renderClientSelectOptions(clients)}
+            </Select>
+
+            <View style={styles.inputError}>
+                {touched &&
+                    ((error && (
+                        <Text style={styles.inputErrorText}>{error}</Text>
+                    )) ||
+                        (warning && (
+                            <Text style={styles.inputErrorText}>{warning}</Text>
+                        )))}
+            </View>
+        </View>
+    );
 };
 
 const renderClientSelectOptions = clients => {
@@ -39,35 +74,6 @@ const renderClientSelectOptions = clients => {
     );
 
     return options;
-};
-
-const renderClientSelect = ({
-    input: { value, onChange },
-    meta: { touched, error, warning },
-    clients,
-}) => {
-    return (
-        <View>
-            <Select
-                caret="down"
-                caretSize={10}
-                caretColor="#86939e"
-                selectStyle={styles.select}
-                listHeight={300}
-                listStyle={styles.selectList}
-                onSelect={value => {
-                    onChange(value);
-                }}
-            >
-                {renderClientSelectOptions(clients)}
-            </Select>
-
-            {/* ToDo check this */}
-            {touched &&
-                ((error && <Text>{error}</Text>) ||
-                    (warning && <Text>{warning}</Text>))}
-        </View>
-    );
 };
 
 let AddRequestForm = props => {
@@ -99,29 +105,18 @@ let AddRequestForm = props => {
 
     return (
         <View style={styles.container}>
-            {/*
-            <Field
-                component={RenderInput}
-                name="clientNumber"
-                placeholder="081291051"
-                label="Número de cliente"
-            />
-            */}
-
             {clients === null ? (
                 <View>
                     <Text style={styles.placeholder}>Cargando clientes...</Text>
                 </View>
             ) : (
                 <View>
-                    {/*TODO refactor renderInput component so it accept select component*/}
                     <Text style={styles.placeholder}>Cliente</Text>
                     <Field
                         name="clientNumber"
                         validate={[checkValidClientNumber]}
-                        component={props =>
-                            renderClientSelect({ ...props, clients })
-                        }
+                        clients={clients}
+                        component={ClientSelect}
                     />
                 </View>
             )}
@@ -131,8 +126,8 @@ let AddRequestForm = props => {
                 <FieldArray
                     name="products"
                     validate={[checkValidProducts]}
-                    component={props =>
-                        AddProductsFieldArray({ ...props, handleRemoveProduct })
+                    component={field =>
+                        AddProductsFieldArray({ ...field, handleRemoveProduct })
                     }
                 />
             </View>
@@ -182,6 +177,13 @@ const styles = StyleSheet.create({
         color: '#86939e',
         fontFamily: 'sans-serif',
         fontWeight: 'bold',
+    },
+    inputError: {
+        marginTop: 5,
+        marginLeft: 15,
+    },
+    inputErrorText: {
+        color: '#c71818',
     },
     selectList: {
         zIndex: 999,
