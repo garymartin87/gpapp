@@ -3,6 +3,8 @@ import _ from 'lodash';
 import gpAppApi from '../apis/gpapp';
 import { CLIENTS_FETCH_REQUESTED, CLIENTS_FETCHED } from './types';
 
+import { alertUser } from './alertUserActions';
+
 export const fetchClients = () => async (dispatch, getState) => {
     dispatch({ type: CLIENTS_FETCH_REQUESTED });
 
@@ -23,6 +25,7 @@ export const fetchClients = () => async (dispatch, getState) => {
 
         dispatch(action);
     } catch (err) {
+        dispatch(alertUser('Verifique su conexión a internet', err.message));
         console.log(err);
     }
 };
