@@ -23,6 +23,53 @@ const checkValidProducts = value => {
     return error;
 };
 
+const renderClientSelectOptions = clients => {
+    let options = clients.map((client, index) => {
+        return (
+            <Option key={index + 1} value={client.code}>
+                {client.name}
+            </Option>
+        );
+    });
+
+    options.unshift(
+        <Option key={0} value={0}>
+            - Seleccione un cliente -
+        </Option>
+    );
+
+    return options;
+};
+
+const renderClientSelect = ({
+    input: { value, onChange },
+    meta: { touched, error, warning },
+    clients,
+}) => {
+    return (
+        <View>
+            <Select
+                caret="down"
+                caretSize={10}
+                caretColor="#86939e"
+                selectStyle={styles.select}
+                listHeight={300}
+                listStyle={styles.selectList}
+                onSelect={value => {
+                    onChange(value);
+                }}
+            >
+                {renderClientSelectOptions(clients)}
+            </Select>
+
+            {/* ToDo check this */}
+            {touched &&
+                ((error && <Text>{error}</Text>) ||
+                    (warning && <Text>{warning}</Text>))}
+        </View>
+    );
+};
+
 let AddRequestForm = props => {
     const {
         handleSubmit,
@@ -50,24 +97,6 @@ let AddRequestForm = props => {
         removeProductActionCreator(index);
     };
 
-    const renderClientSelectOptions = () => {
-        let options = clients.map((client, index) => {
-            return (
-                <Option key={index + 1} value={client.code}>
-                    {client.name}
-                </Option>
-            );
-        });
-
-        options.unshift(
-            <Option key={0} value={0}>
-                - Seleccione un cliente -
-            </Option>
-        );
-
-        return options;
-    };
-
     return (
         <View style={styles.container}>
             {/*
@@ -90,35 +119,9 @@ let AddRequestForm = props => {
                     <Field
                         name="clientNumber"
                         validate={[checkValidClientNumber]}
-                        component={({
-                            input: { value, onChange },
-                            meta: { touched, error, warning },
-                        }) => {
-                            return (
-                                <View>
-                                    <Select
-                                        caret="down"
-                                        caretSize={10}
-                                        caretColor="#86939e"
-                                        selectStyle={styles.select}
-                                        listHeight={300}
-                                        listStyle={styles.selectList}
-                                        onSelect={value => {
-                                            onChange(value);
-                                        }}
-                                    >
-                                        {renderClientSelectOptions()}
-                                    </Select>
-
-                                    {/* ToDo check this */}
-                                    {touched &&
-                                        ((error && <Text>{error}</Text>) ||
-                                            (warning && (
-                                                <Text>{warning}</Text>
-                                            )))}
-                                </View>
-                            );
-                        }}
+                        component={props =>
+                            renderClientSelect({ ...props, clients })
+                        }
                     />
                 </View>
             )}
